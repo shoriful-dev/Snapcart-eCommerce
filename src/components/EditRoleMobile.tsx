@@ -1,8 +1,128 @@
-import React from 'react';
+'use client';
+import axios from 'axios';
+import { ArrowRight, Bike, User, UserCog } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const EditRoleMobile = () => {
+  const router = useRouter();
+  const [roles, setRoles] = useState([
+    { id: 'admin', label: 'Admin', icon: UserCog },
+    { id: 'user', label: 'User', icon: User },
+    { id: 'deliveryBoy', label: 'Delivery Boy', icon: Bike },
+  ]);
+  const [selectedRole, setSelectedRole] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleEdit = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+
+      const result = await axios.post('/api/user/edit-role-mobile', {
+        role: selectedRole,
+        mobile,
+      });
+      console.log(result);
+      router.push('/');
+    } catch (error) {
+      console.error('Error:', error);
+      if (axios.isAxiosError(error)) {
+        setError(
+          error.response?.data?.message ||
+            'An error occurred. Please try again.',
+        );
+      } else {
+        setError('An unexpected error occurred.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-screen p-6 w-full">EditRoleMobile</div>
+    <div className="flex flex-col items-center min-h-screen p-6 w-full">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl md:text-4xl font-extrabold text-green-700 text-center mt-8"
+      >
+        Select Your Role
+      </motion.h1>
+
+      <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-10">
+        {roles?.map(role => {
+          const Icon = role.icon;
+          const isSelected = selectedRole === role.id;
+          return (
+            <motion.div
+              onClick={() => setSelectedRole(role.id)}
+              whileTap={{ scale: 0.9 }}
+              key={role.id}
+              className={`flex flex-col items-center justify-center w-48 h-44 rounded-2xl border-2 transition-all cursor-pointer ${
+                isSelected
+                  ? 'border-green-600 bg-green-100 shadow-lg'
+                  : 'border-gray-300 bg-white hover:border-green-400'
+              }`}
+            >
+              <Icon className="w-12 h-12 mb-2" />
+              <span className="font-medium">{role.label}</span>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="flex flex-col items-center mt-10 w-full"
+      >
+        <label htmlFor="mobile" className="text-gray-700 font-medium mb-2">
+          Enter Your Mobile No.
+        </label>
+        <input
+          type="tel"
+          id="mobile"
+          value={mobile}
+          className="w-64 md:w-80 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none text-gray-800"
+          placeholder="eg. 01700000000"
+          onChange={e => setMobile(e.target.value)}
+          maxLength={11}
+        />
+      </motion.div>
+
+      {/* Error message */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 px-4 py-2 bg-red-100 border border-red-400 text-red-700 rounded-lg"
+        >
+          {error}
+        </motion.div>
+      )}
+
+      <motion.button
+        disabled={mobile.length !== 11 || !selectedRole || isLoading}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        onClick={handleEdit}
+        className={`inline-flex items-center gap-2 font-semibold py-3 px-8 rounded-2xl shadow-md transition-all duration-200 mt-20 ${
+          selectedRole && mobile.length === 11 && !isLoading
+            ? 'bg-green-600 hover:bg-green-700 text-white cursor-pointer'
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        }`}
+      >
+        {isLoading ? 'Loading...' : 'Go to Home'}
+        {!isLoading && <ArrowRight />}
+      </motion.button>
+    </div>
   );
 };
 
