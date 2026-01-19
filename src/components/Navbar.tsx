@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IUser {
   _id?: mongoose.Types.ObjectId;
@@ -20,6 +20,15 @@ interface IUser {
 const Navbar = ({ user }: { user: IUser }) => {
   const [open, setOpen] = useState(false);
   const profileDropDown = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if(profileDropDown.current && !profileDropDown.current.contains(e.target as Node)){
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  },[])
   return (
     <div className="w-[95%] fixed top-4 left-1/2 -translate-x-1/2 bg-linear-to-r from-green-500 to-green-700 rounded-2xl shadow-lg shadow-black/30 flex justify-between items-center h-20 px-4 md:px-8 z-50">
       {/* left */}
