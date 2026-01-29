@@ -1,42 +1,69 @@
+'use client'
 import { Leaf, Smartphone, Truck } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+const slides = [
+  {
+    id: 1,
+    icon: (
+      <Leaf className="w-20 h-20 sm:w-28 sm:h-28 text-green-400 drop-shadow-lg" />
+    ),
+    title: 'Fresh Organic Groceries 🥦',
+    subTitle:
+      'Farm-fresh fruits, vegetables, and daily essentials delivered to you.',
+    btnText: 'Shop Now',
+    bg: 'https://plus.unsplash.com/premium_photo-1683121459855-5ec72b6b08d0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    id: 2,
+    icon: (
+      <Truck className="w-20 h-20 sm:w-28 sm:h-28 text-yellow-400 drop-shadow-lg" />
+    ),
+    title: 'Fast & Reliable Delivery 🚚',
+    subTitle: 'We ensure your groceries reach your doorstep in no time',
+    btnText: 'Order Now',
+    bg: 'https://images.unsplash.com/photo-1607273685680-6bd976c5a5ce?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    id: 3,
+    icon: (
+      <Smartphone className="w-20 h-20 sm:w-28 sm:h-28 text-blue-400 drop-shadow-lg" />
+    ),
+    title: 'Shop Anytime, Anywhere 📱',
+    subTitle: 'Easy and seamless online grocery shopping experience.',
+    btnText: 'Get Started',
+    bg: 'https://plus.unsplash.com/premium_photo-1761846730481-e0e3083a385e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+];
 
 const HeroSection = () => {
-  const slides = [
-    {
-      id: 1,
-      icon: (
-        <Leaf className="w-20 h-20 sm:w-28 sm:h-28 text-green-400 drop-shadow-lg" />
-      ),
-      title: 'Fresh Organic Groceries 🥦',
-      subTitle:
-        'Farm-fresh fruits, vegetables, and daily essentials delivered to you.',
-      btnText: 'Shop Now',
-      bg: 'https://plus.unsplash.com/premium_photo-1661409279183-569bfddb7100?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: 2,
-      icon: (
-        <Truck className="w-20 h-20 sm:w-28 sm:h-28 text-yellow-400 drop-shadow-lg" />
-      ),
-      title: 'Fast & Reliable Delivery 🚚',
-      subTitle: 'We ensure your groceries reach your doorstep in no time',
-      btnText: 'Order Now',
-      bg: 'https://images.unsplash.com/photo-1607273685680-6bd976c5a5ce?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: 3,
-      icon: (
-        <Smartphone className="w-20 h-20 sm:w-28 sm:h-28 text-blue-400 drop-shadow-lg" />
-      ),
-      title: 'Shop Anytime, Anywhere 📱',
-      subTitle: 'Easy and seamless online grocery shopping experience.',
-      btnText: 'Get Started',
-      bg: 'https://plus.unsplash.com/premium_photo-1761846730481-e0e3083a385e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-  ];
+  const [current, setCurrent] = useState(0);
 
-  console.log(slides);
-  return <div>HeroSection</div>;
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % (slides?.length))
+    }, 4000)
+    return () => clearInterval(timer)
+  },[])
+  return (
+    <div className='relative w-[98%] mx-auto mt-32 h-[80vh] rounded-3xl overflow-hidden shadow-2xl'>
+      <AnimatePresence mode='wait'>
+        <motion.div
+        key={current}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{duration: 0.8}}
+        exit={{opacity: 0}}
+        className='absolute inset-0'
+        >
+          <Image src={slides[current]?.bg} alt='banner Image' fill priority className='object-cover'/>
+          <div className='absolute inset-0 bg-black/50 backdrop:blur-[1px]'/>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
 };
 
 export default HeroSection;
