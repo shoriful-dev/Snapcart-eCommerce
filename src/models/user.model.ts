@@ -21,9 +21,13 @@ const userSchema = new mongoose.Schema<IUser>(
       enum: ['user', 'deliveryBoy', 'admin'],
       default: 'user',
     },
-    image: {type: String}
+    image: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/shoriful-dev/image/upload/v1765435308/profile_ukrn4f.png',
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

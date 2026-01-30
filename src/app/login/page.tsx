@@ -19,15 +19,20 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-     await signIn('credentials', {email, password});
-     router.push('/')
-     setLoading(false);
-    } catch (error) {
-      console.error(error)
-      setLoading(false);
+    
+    const res = await signIn('credentials', {
+      email,
+      password,
+      redirect: false
+    })
+    setLoading(false);
+    if(res?.ok) {
+      router.push('/')
+    } else {
+      console.error(res?.error)
     }
   };
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10 bg-white relative">
       <motion.h1
