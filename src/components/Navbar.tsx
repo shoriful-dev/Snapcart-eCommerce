@@ -123,7 +123,12 @@ const Navbar = ({ user }: { user: IUser }) => {
                 Manage Orders
               </Link>
             </div>
-            
+            <div
+              className="md:hidden bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+              onClick={() => setMenuOpen(prev => !prev)}
+            >
+              <Menu className="text-green-600 w-6 h-6" />
+            </div>
           </>
         )}
 
