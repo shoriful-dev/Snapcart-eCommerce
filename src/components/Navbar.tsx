@@ -92,7 +92,7 @@ const Navbar = ({ user }: { user: IUser }) => {
             </div>
             <div className="flex flex-col gap-3 font-medium mt-6">
               <Link
-                href={''}
+                href={'/admin/add-grocery'}
                 className="flex items-center gap-3 p-3 rounded-lg bg-white/10 hover:bg-white/20 hover:pl-4 transition-all"
               >
                 <PlusCircle className="w-5 h-5" />
@@ -114,8 +114,11 @@ const Navbar = ({ user }: { user: IUser }) => {
               </Link>
             </div>
             <div className="my-5 border-t border-white/20"></div>
-            <div onClick={async () => await signOut({callbackUrl: '/'})} className="flex items-center gap-3 text-red-300 font-semibold mt-auto hover:bg-red-500/20 p-3 rounded-lg transition-all cursor-pointer">
-              <LogOut className='w-5 h-5 text-red-300'/>
+            <div
+              onClick={async () => await signOut({ callbackUrl: '/' })}
+              className="flex items-center gap-3 text-red-300 font-semibold mt-auto hover:bg-red-500/20 p-3 rounded-lg transition-all cursor-pointer"
+            >
+              <LogOut className="w-5 h-5 text-red-300" />
               Logout
             </div>
           </motion.div>
@@ -171,7 +174,7 @@ const Navbar = ({ user }: { user: IUser }) => {
           <>
             <div className="hidden md:flex items-center gap-4">
               <Link
-                href={''}
+                href={'/admin/add-grocery'}
                 className="flex items-center gap-2 bg-white text-green-700 font-semibold px-4 py-2 rounded-full hover:bg-green-100 transition-all"
               >
                 <PlusCircle className="w-5 h-5" />
@@ -298,9 +301,9 @@ const Navbar = ({ user }: { user: IUser }) => {
               </motion.div>
             )}
           </AnimatePresence>
-          {/* Side bar */}
         </div>
       </div>
+      {/* Side bar */}
       {sideBar}
     </div>
   );
