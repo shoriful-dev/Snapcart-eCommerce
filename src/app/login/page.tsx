@@ -12,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
   const session = useSession();
   console.log(session);
@@ -29,6 +30,7 @@ const Login = () => {
     if(res?.ok) {
       router.push('/')
     } else {
+      setError(res?.error || 'Invalid credentials');
       console.error(res?.error)
     }
   };
@@ -53,6 +55,11 @@ const Login = () => {
         transition={{ duration: 0.6 }}
         className="flex flex-col gap-5 w-full max-w-sm"
       >
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
+            {error}
+          </div>
+        )}
         {/* Email Input */}
         <div className="relative">
           <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />

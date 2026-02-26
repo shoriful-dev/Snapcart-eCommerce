@@ -1,0 +1,15 @@
+
+> snapcart-ecommerce@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 22708, using available port 3001 instead.
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.1.4:3001
+- Environments: .env
+
+✓ Starting...
+⨯ Unable to acquire lock at P:\Fullstack-eCommerce-Projects\Grocery-Delivery-Website\snapcart-ecommerce\.next\dev\lock, is another instance of next dev running?
+  Suggestion: If you intended to restart next dev, terminate the other process, and then try again.
+[?25h

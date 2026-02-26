@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import { setServers } from "node:dns/promises";
+
+// Set DNS servers to resolve MongoDB SRV records
+try {
+  setServers(["1.1.1.1", "8.8.8.8"]);
+} catch (error) {
+  console.log("Error setting DNS servers", error);
+}
 
 const mongodbUrl = process.env.MONGODB_URL;
 

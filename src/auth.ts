@@ -13,12 +13,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        await connectDB();
+        try {
+          await connectDB();
+        } catch (dbError) {
+          console.error("Database connection failed:", dbError);
+          throw new Error("Database connection error. Please try again later.");
+        }
         const email = credentials.email;
         const password = credentials.password as string;
         const user = await User.findOne({ email });
         if (!user) {
           throw new Error('User Does Not Exist!');
+        }
+        if (!user.password) {
+          throw new Error('Please login with your social account or set a password.');
         }
         const isMatchPassword = await bcrypt.compare(password, user.password);
         if (!isMatchPassword) {
@@ -85,7 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: 'jwt',
-    maxAge: 10 * 24 * 60 * 60 * 1000,
+    maxAge: 10 * 24 * 60 * 60,
   },
   secret: process.env.AUTH_SECRET,
 });
