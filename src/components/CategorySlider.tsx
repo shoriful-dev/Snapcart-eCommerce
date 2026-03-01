@@ -56,7 +56,7 @@ const CategorySlider = () => {
       } else {
         scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
       }
-    },4000)
+    },2000)
     return () => clearInterval(autoScrollInterval);
   },[])
 
